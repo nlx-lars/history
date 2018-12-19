@@ -8,6 +8,8 @@ AE.History.HistoryController.index = Template {
 	site = ${site}
 	accounts = ${accounts}
 	account = ${account}
+	to = ${to}
+	from = ${from}
 	node = ${node}
 	firstEvent = ${firstEvent}
 

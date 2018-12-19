@@ -37,6 +37,15 @@ $wideMargin: 32px;
 			margin-top: 20px;
 			float: left;
 		}
+
+		.input-group {
+			display: flex;
+			flex-flow: row wrap;
+
+			.inline-input + .inline-input {
+				margin-left: .5rem;
+			}
+		}
 	}
 
 	.neos-history-day {

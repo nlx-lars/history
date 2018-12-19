@@ -64,9 +64,11 @@ class HistoryController extends AbstractModuleController
      * @param string $site
      * @param string $node
      * @param string $account
+     * @param string $from
+     * @param string $to
      * @return void
      */
-    public function indexAction($offset = 0, $limit = 25, $site = null, $node = null, $account = null)
+    public function indexAction($offset = 0, $limit = 25, $site = null, $node = null, $account = null, $from = null, $to = null)
     {
         $numberOfSites = 0;
         // In case a user can only access a single site, but more sites exists
@@ -84,7 +86,18 @@ class HistoryController extends AbstractModuleController
 
         $accounts = $this->accountRepository->findByAuthenticationProviderName('Neos.Neos:Backend')->toArray();
 
-        $events = $this->nodeEventRepository->findRelevantEventsByWorkspace($offset, $limit + 1, 'live', $site, $node, $account)->toArray();
+        if ($from && preg_match('/^\d{4}-\d{2}-\d{2}$/', $from)) {
+            $from = new \DateTime($from);
+        } else {
+            $from = null;
+        }
+        if ($to && preg_match('/^\d{4}-\d{2}-\d{2}$/', $to)) {
+            $to = new \DateTime($to);
+        } else {
+            $to = null;
+        }
+
+        $events = $this->nodeEventRepository->findRelevantEventsByWorkspace($offset, $limit + 1, 'live', $site, $node, $account, $from, $to)->toArray();
 
         $nextPage = null;
         if (count($events) > $limit) {
@@ -133,6 +146,8 @@ class HistoryController extends AbstractModuleController
             'site' => $site,
             'accounts' => $accounts,
             'account' => $account,
+            'from' => $from,
+            'to' => $to,
             'node' => $node,
             'firstEvent' => $firstEvent
         ]);

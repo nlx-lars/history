@@ -24,9 +24,11 @@ class NodeEventRepository extends EventRepository
      * @param string $siteIdentifier
      * @param string $nodeIdentifier
      * @param string $accountIdentifier
+     * @param \DateTime $from
+     * @param \DateTime $to
      * @return QueryResultInterface
      */
-    public function findRelevantEventsByWorkspace($offset, $limit, $workspaceName, $siteIdentifier = null, $nodeIdentifier = null, $accountIdentifier = null)
+    public function findRelevantEventsByWorkspace($offset, $limit, $workspaceName, $siteIdentifier = null, $nodeIdentifier = null, $accountIdentifier = null, $from = null, $to = null)
     {
         $query = $this->prepareRelevantEventsQuery();
         $query->getQueryBuilder()
@@ -48,6 +50,16 @@ class NodeEventRepository extends EventRepository
             $query->getQueryBuilder()
                 ->andWhere('e.accountIdentifier = :accountIdentifier')
                 ->setParameter('accountIdentifier', $accountIdentifier);
+        }
+        if ($from) {
+            $query->getQueryBuilder()
+                ->andWhere('e.timestamp >= :from')
+                ->setParameter('from', $from);
+        }
+        if ($to) {
+            $query->getQueryBuilder()
+                ->andWhere('e.timestamp <= :to')
+                ->setParameter('to', $to);
         }
         $query->getQueryBuilder()->setFirstResult($offset);
         $query->getQueryBuilder()->setMaxResults($limit);

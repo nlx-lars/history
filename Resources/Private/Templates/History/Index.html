@@ -18,6 +18,18 @@
 				<f:form.select name="moduleArguments[account]" id="account" value="{account}" options="{accounts}" optionLabelField="accountIdentifier" optionValueField="accountIdentifier" prependOptionValue="" prependOptionLabel="All" />
 				<br /><br />
 			</f:if>
+
+			<div class="input-group">
+				<div class="inline-input">
+					<label for="from"><b>From</b></label>
+					<f:form.textfield type="date" name="moduleArguments[from]" id="from" value="{f:if(condition: from, then: '{from -> f:format.date(format: \'Y-m-d\')}')}" />
+				</div>
+
+				<div class="inline-input">
+					<label for="to"><b>To</b></label>
+					<f:form.textfield type="date" name="moduleArguments[to]" id="to" value="{f:if(condition: to, then: '{to -> f:format.date(format: \'Y-m-d\')}')}" />
+				</div>
+			</div>
 		</form>
 
 		<f:if condition="{node}">
@@ -205,7 +217,7 @@
 		var loadMore = $('.loadMore');
 		var nextPage = loadMore.data('neos-history-nextpage');
 		var historyContainer = $('.neos-history');
-		$('#site, #account').change(function() {
+		$('#site, #account, .input-group input').change(function() {
 			this.form.submit();
 		});
 		$('button', loadMore).click(function() {
