@@ -168,4 +168,7 @@
     bottom: -11px;
     left: -1px; }
 
+.neos.neos-module.neos-module-management-history input[type="date"]::-webkit-inner-spin-button {
+  display: none; }
+
 /*# sourceMappingURL=Module.css.map */

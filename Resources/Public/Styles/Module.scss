@@ -271,4 +271,9 @@ $wideMargin: 32px;
 			}
 		}
 	}
+
+	input[type="date"]::-webkit-inner-spin-button {
+		// Hide up/down arrows for increasing / decreasing date
+		display: none;
+	}
 }
