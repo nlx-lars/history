@@ -86,6 +86,7 @@ class HistoryController extends AbstractModuleController
 
         $accounts = $this->accountRepository->findByAuthenticationProviderName('Neos.Neos:Backend')->toArray();
 
+        xdebug_break();
         if ($from && preg_match('/^\d{4}-\d{2}-\d{2}$/', $from)) {
             $from = new \DateTime($from);
         } else {
@@ -93,6 +94,7 @@ class HistoryController extends AbstractModuleController
         }
         if ($to && preg_match('/^\d{4}-\d{2}-\d{2}$/', $to)) {
             $to = new \DateTime($to);
+            $to->modify('tomorrow');
         } else {
             $to = null;
         }
