@@ -93,7 +93,7 @@ class HistoryController extends AbstractModuleController
         }
         if ($to && preg_match('/^\d{4}-\d{2}-\d{2}$/', $to)) {
             $to = new \DateTime($to);
-            $to->modify('tomorrow');
+            $to->setTime(23, 59, 59);
         } else {
             $to = null;
         }
