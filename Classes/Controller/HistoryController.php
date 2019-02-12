@@ -87,18 +87,18 @@ class HistoryController extends AbstractModuleController
         $accounts = $this->accountRepository->findByAuthenticationProviderName('Neos.Neos:Backend')->toArray();
 
         if ($from && preg_match('/^\d{4}-\d{2}-\d{2}$/', $from)) {
-            $from = new \DateTime($from);
+            $fromDate = new \DateTime($from);
         } else {
-            $from = null;
+            $fromDate = null;
         }
         if ($to && preg_match('/^\d{4}-\d{2}-\d{2}$/', $to)) {
-            $to = new \DateTime($to);
-            $to->setTime(23, 59, 59);
+            $toDate = new \DateTime($to);
+            $toDate->setTime(23, 59, 59);
         } else {
-            $to = null;
+            $toDate = null;
         }
 
-        $events = $this->nodeEventRepository->findRelevantEventsByWorkspace($offset, $limit + 1, 'live', $site, $node, $account, $from, $to)->toArray();
+        $events = $this->nodeEventRepository->findRelevantEventsByWorkspace($offset, $limit + 1, 'live', $site, $node, $account, $fromDate, $toDate)->toArray();
 
         $nextPage = null;
         if (count($events) > $limit) {
@@ -108,7 +108,12 @@ class HistoryController extends AbstractModuleController
                 ->controllerContext
                 ->getUriBuilder()
                 ->setCreateAbsoluteUri(true)
-                ->uriFor('Index', ['offset' => $offset + $limit, 'site' => $site], 'History', 'Neos.Neos');
+                ->uriFor('Index', [
+                    'offset' => $offset + $limit,
+                    'site' => $site,
+                    'from' => $from,
+                    'to' => $to
+                ], 'History', 'Neos.Neos');
         }
 
         $eventsByDate = array();
@@ -147,8 +152,8 @@ class HistoryController extends AbstractModuleController
             'site' => $site,
             'accounts' => $accounts,
             'account' => $account,
-            'from' => $from,
-            'to' => $to,
+            'from' => $fromDate,
+            'to' => $toDate,
             'node' => $node,
             'firstEvent' => $firstEvent
         ]);
